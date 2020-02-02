@@ -43,7 +43,7 @@ const spawnPreRenderServer = (parameters) => {;
                     parameters.callbacks.onServerStdOutCallback(this,data,resolve,reject);
                 }
 
-                if(data.startsWith(parameters.serverOutputSuccessMessage)){
+                if(data.includes(parameters.serverOutputSuccessMessage)){
                     resolve();
                 }
 
