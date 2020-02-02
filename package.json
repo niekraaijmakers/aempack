@@ -1,0 +1,22 @@
+{
+  "name": "aempack",
+  "version": "1.0.0",
+  "description": "Synchronizes webpack (client and server side) seamlessly with AEM",
+  "main": "index.js",
+  "scripts": {
+    "test": "testconn"
+  },
+  "author": "Adobe Systems Inc. - Niek Raaijmakers",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "webpack": "^4.38.0",
+    "webpack-dev-server": "^3.7.2",
+    "webpack-flush-chunks": "^2.0.3",
+    "webpack-manifest-plugin": "2.0.4",
+    "clone": "^2.1.2",
+    "request": "^2.88.0",
+    "cross-spawn": "^7.0.0",
+    "browser-sync": "^2.26.7",
+    "ps-tree": "^1.2.0"
+  }
+}
