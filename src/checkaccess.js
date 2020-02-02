@@ -21,7 +21,7 @@ module.exports = function (toCheckPath){
         //check permissions
         fs.access(toCheckPath, fs.constants.R_OK, (error) => {
             if(error){
-                console.log('lacking access to ' + path, error);
+                console.log('lacking access to ' + toCheckPath, error);
                 reject();
             }else{
                 resolve();

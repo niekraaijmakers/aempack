@@ -1,6 +1,6 @@
 {
   "name": "aempack",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Synchronizes webpack (client and server side) seamlessly with AEM",
   "main": "index.js",
   "scripts": {

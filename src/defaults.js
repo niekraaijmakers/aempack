@@ -18,7 +18,7 @@ module.exports = {
 
 
     delays: {
-        postCompiledDebounceDelay: 1500,
+        postCompiledDebounceDelay: 1000,
         serverSpawnDelay: 1000,
         folderPushDelay: 250,
         cleanUpDelay: 1000

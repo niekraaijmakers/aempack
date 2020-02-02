@@ -70,7 +70,18 @@ const commitToAem = async (parameters) => {
     const results = [];
 
     for (const task of payloadArray) {
-        results.push(await commitFN(task, parameters));
+        if(parameters.callbacks.onAemPush){
+            const result = parameters.callbacks.onAemPush(task);
+
+            if(result !== false){
+                results.push(await commitFN(task, parameters));
+            }else if(parameters.verbose){
+                console.log('Blocking task with url: ' + task.url);
+            }
+        }else{
+            results.push(await commitFN(task, parameters));
+        }
+
     }
 
     return results;
