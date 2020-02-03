@@ -74,10 +74,6 @@ const initiateSync = (parameters) => {
         server = startBrowserSync(parameters);
     }
 
-    if (developWithSSR !== false) {
-        startPreRenderServer(parameters)
-    }
-
     compiler.watch({
         ignored: [
             path.resolve(__dirname, 'dist'),
