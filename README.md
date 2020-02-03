@@ -25,6 +25,7 @@ Why generate the JS/CSS files to a clientlib in ui.apps? This is for making the 
 
 #### How to use
 
+
 ##### Configure webpack: webpack.aem-dev.js
 
 ```javascript
@@ -250,7 +251,9 @@ Default values are given in below json and are fully configurable.
     pathToServerJsFile: null
 }
 ```
-
+ ### Demo
+ 
+[![Demo](https://img.youtube.com/vi/TMkUJHDk10g/0.jpg)](https://www.youtube.com/watch?v=TMkUJHDk10g)
 
 
 LEGAL DISCLAIMER: I (the author) am a employee from Adobe, and Adobe holds the full rights over this plugin.
