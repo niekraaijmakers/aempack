@@ -19,9 +19,8 @@ module.exports = {
 
     delays: {
         postCompiledDebounceDelay: 1000,
-        serverSpawnDelay: 1000,
-        folderPushDelay: 250,
-        cleanUpDelay: 1000
+        serverSpawnDelay: 500,
+        folderPushDelay: 250
     },
     callbacks: {
         onAemPush: null,
@@ -58,8 +57,6 @@ module.exports = {
     clientLibRelativePath: null,
     clientLibAbsolutePath: null,
 
-
-
-    serverOutputSuccessMessage: '',
+    serverOutputSuccessMessage: 'listening on port',
     pathToServerJsFile: null
 };
