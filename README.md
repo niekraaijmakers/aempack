@@ -251,7 +251,8 @@ Default values are given in below json and are fully configurable.
     pathToServerJsFile: null
 }
 ```
- ### Demo
+
+### Demo
  
 [![Demo](https://img.youtube.com/vi/TMkUJHDk10g/0.jpg)](https://www.youtube.com/watch?v=TMkUJHDk10g)
 
