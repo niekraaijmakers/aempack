@@ -1,6 +1,6 @@
 {
   "name": "aempack",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "keywords": ["adobe", "aem", "cq5", "webpack", "aempack", "livereload"],
   "description": "Synchronizes webpack (client and server side) seamlessly with AEM",
   "main": "index.js",
@@ -16,8 +16,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "webpack": "^4.38.0",
-    "webpack-dev-server": "^3.7.2",
-    "webpack-flush-chunks": "^2.0.3",
     "webpack-manifest-plugin": "2.0.4",
     "clone": "^2.1.2",
     "request": "^2.88.0",
