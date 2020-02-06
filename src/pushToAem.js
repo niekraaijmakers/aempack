@@ -45,13 +45,16 @@ const commitFN = async (value, parameters) => {
         setTimeout(() => {
             request(value, (err, response, body) => {
                 if (err || response.statusCode === 500) {
-                    console.log('error pushing file!', err || response.body)
-                    //console.log('response:', response)
+                    console.log('error pushing folder ' + value.url + ' to aem!');
+
+                    if(parameters.verbose){
+                        console.log('body:', body)
+                        console.log('response:', response)
+                    }
                     reject(response);
                 } else {
-                    if (parameters.verbose) {
-                        console.info('Pushed folder ' + value.url + ' to AEM');
-                    }
+
+                    console.info('Pushed folder ' + value.url + ' to AEM');
                     resolve();
                 }
             });
