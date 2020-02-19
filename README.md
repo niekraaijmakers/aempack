@@ -6,7 +6,7 @@ Features
 
 * Utilizes webpack watch
 * Pushes changes directly to AEM using http post requests
-* Compatible with chunking, sourcemaps, hot module replacement, typescript / EcmaScript 6,7,
+* Compatible with chunking, sourcemaps, typescript / EcmaScript 6,7,
 * Fires up a live reload proxy (BrowserSync) to AEM that can acts as dispatcher. (https supported)
 * Support for a server webpack configuration for server side rendering or other things as needed
 * Server output javascript (if present) get's executed using nodejs and restarted before each live reload
