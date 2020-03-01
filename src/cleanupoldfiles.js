@@ -16,8 +16,24 @@
 
 const fs = require('fs');
 
-function notInManifest(manifest, filePathRelative) {
-    return Object.values(manifest).indexOf(filePathRelative) < 0;
+function _inManifestCheck(manifest, filePathRelative){
+    return Object.values(manifest).indexOf(filePathRelative) > -1;
+}
+
+function inManifest(manifest, filePathRelative) {
+
+    if(filePathRelative.startsWith('/apps/')){
+        //also check with /etc.clientlibs
+        if(_inManifestCheck(manifest, filePathRelative.replace('/apps/','/etc.clientlibs/'))){
+            return true;
+        }
+    }else if(filePathRelative.startsWith('/libs/')){
+        if(_inManifestCheck(manifest, filePathRelative.replace('/libs/', '/etc.clientlibs/'))){
+            return true;
+        }
+    }
+
+    return _inManifestCheck(manifest, filePathRelative);
 }
 
 const cleanupLoop = (parameters, folder, eligibleForCleanUpRegex,stats) => {
@@ -45,7 +61,7 @@ const cleanupLoop = (parameters, folder, eligibleForCleanUpRegex,stats) => {
                 console.info('removed for cleanup: ' + filePathAbsolute);
             }
             fs.unlinkSync(filePathAbsolute);
-        }else if(eligibleForCleanUpRegex.test(fileName) && notInManifest(manifest, filePathRelative)){
+        }else if(eligibleForCleanUpRegex.test(fileName) && !inManifest(manifest, filePathRelative)){
             if(parameters.verbose){
                 console.info('removed for cleanup: ' + filePathAbsolute);
             }
