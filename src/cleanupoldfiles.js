@@ -16,24 +16,43 @@
 
 const fs = require('fs');
 
-function _inManifestCheck(manifest, filePathRelative){
-    return Object.values(manifest).indexOf(filePathRelative) > -1;
+function perfObjectValues(manifest){
+    if(manifest['files']){
+        return Object.values(manifest['files']);
+    }else{
+        return Object.values(manifest);
+    }
 }
 
-function inManifest(manifest, filePathRelative) {
+function _inManifestCheck(parameters, manifest, filePathRelative){
+
+    if(perfObjectValues(manifest).indexOf(filePathRelative) > -1){
+        return true;
+    }
+
+    if( filePathRelative.indexOf(parameters.clientLibRelativePath) > -1 &&
+        perfObjectValues(manifest).indexOf(filePathRelative.slice(parameters.clientLibRelativePath.length)) > -1
+    ){
+        return true;
+    }
+
+    return false;
+}
+
+function inManifest(parameters, manifest, filePathRelative) {
 
     if(filePathRelative.startsWith('/apps/')){
         //also check with /etc.clientlibs
-        if(_inManifestCheck(manifest, filePathRelative.replace('/apps/','/etc.clientlibs/'))){
+        if(_inManifestCheck(parameters, manifest, filePathRelative.replace('/apps/','/etc.clientlibs/'))){
             return true;
         }
     }else if(filePathRelative.startsWith('/libs/')){
-        if(_inManifestCheck(manifest, filePathRelative.replace('/libs/', '/etc.clientlibs/'))){
+        if(_inManifestCheck(parameters, manifest, filePathRelative.replace('/libs/', '/etc.clientlibs/'))){
             return true;
         }
     }
 
-    return _inManifestCheck(manifest, filePathRelative);
+    return _inManifestCheck(parameters, manifest, filePathRelative);
 }
 
 const cleanupLoop = (parameters, folder, eligibleForCleanUpRegex,stats) => {
@@ -61,7 +80,7 @@ const cleanupLoop = (parameters, folder, eligibleForCleanUpRegex,stats) => {
                 console.info('removed for cleanup: ' + filePathAbsolute);
             }
             fs.unlinkSync(filePathAbsolute);
-        }else if(eligibleForCleanUpRegex.test(fileName) && !inManifest(manifest, filePathRelative)){
+        }else if(eligibleForCleanUpRegex.test(fileName) && !inManifest(parameters, manifest, filePathRelative)){
             if(parameters.verbose){
                 console.info('removed for cleanup: ' + filePathAbsolute);
             }
