@@ -30,22 +30,23 @@ const generateStandardOptions = (parameters) => {
     };
 };
 
-const gatherPayloads = (parameters, folder, payloadArray) => {
+const gatherPayloads = (isFirst, parameters, folder, payloadArray) => {
 
 
     const base = parameters.webpackConfig.output.path + "/" ;
 
     const contents = fs.readdirSync(base + folder);
     const currentPayload = clone(generateStandardOptions(parameters));
-    currentPayload.url =  parameters.aemBaseUrl + parameters.clientLibRelativePath + folder + '?jcr:primaryType=nt:folder';
+    const jcrType = (isFirst) ? 'cq:ClientLibraryFolder' : 'nt:folder';
+    currentPayload.url =  parameters.aemBaseUrl + parameters.clientLibRelativePath + folder + '?jcr:primaryType=' + jcrType;
+
 
     contents.forEach((file) => {
 
         const filePath =  folder + "/" + file;
         const stat = fs.statSync(base + filePath);
         if(stat && stat.isDirectory()){
-            currentPayload.formData['jcr:primaryType'] = 'nt:folder';
-            gatherPayloads(parameters, filePath, payloadArray);
+            gatherPayloads(false, parameters, filePath, payloadArray);
         }else{
             currentPayload.formData[file] = fs.createReadStream(base + filePath);
             currentPayload.formData[file + '@TypeHint'] = 'nt:file';

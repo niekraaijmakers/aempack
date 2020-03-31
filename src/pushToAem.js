@@ -66,7 +66,7 @@ const commitFN = async (value, parameters) => {
 
 const commitToAem = async (parameters) => {
     const payloadArray = [];
-    gatherPayloads(parameters, '', payloadArray);
+    gatherPayloads(true, parameters, '', payloadArray);
 
     payloadArray.sort(compare);
 
