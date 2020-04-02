@@ -1,7 +1,14 @@
 {
   "name": "aempack",
-  "version": "1.1.6",
-  "keywords": ["adobe", "aem", "cq5", "webpack", "aempack", "livereload"],
+  "version": "1.1.8",
+  "keywords": [
+    "adobe",
+    "aem",
+    "cq5",
+    "webpack",
+    "aempack",
+    "livereload"
+  ],
   "description": "Synchronizes webpack (client and server side) seamlessly with AEM",
   "main": "index.js",
   "homepage": "https://github.com/niekraaijmakers/aempack#readme",

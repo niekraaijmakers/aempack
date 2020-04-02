@@ -15,15 +15,12 @@
  */
 
 'use strict';
-const webpack = require('webpack');
-const path = require('path');
-
 const checkAccess = require('./src/checkaccess');
 const startPreRenderServer = require('./src/renderserver');
 const pushToAemHandler = require('./src/pushToAem');
 const defaultOptions = require('./src/defaults');
 const startBrowserSync = require('./src/initBrowserSync');
-const cleanUpOldFiles = require('./src/cleanupoldfiles');
+const initiateWatch = require('./src/initiateWatch');
 
 const reloadBrowser = (parameters, server) => {
     if(parameters.browserSync.enabled){
@@ -60,26 +57,20 @@ const initiateSync = (parameters) => {
         throw new Error("clientLibAbsolutePath not configured! This is mandatory!");
     }
 
+    if(!parameters.webpackConfig && !parameters.cliBuildCommand){
+        throw new Error("webpackConfig and cliBuildCommand  not configured! You need to provide one of either!");
+    }
+
     const aemBaseUrl = parameters.aemProtocol + '://' + parameters.aemHost + ':' + parameters.aemPort;
     parameters.aemBaseUrl = aemBaseUrl;
-
     const developWithSSR = !!parameters.webpackServerConfig && !parameters.disableServerSideRendering;
-
-    const compiler = (developWithSSR) ?
-        webpack([parameters.webpackConfig, parameters.webpackServerConfig]) :
-        webpack(parameters.webpackConfig);
 
     let server;
     if(parameters.browserSync.enabled){
         server = startBrowserSync(parameters);
     }
 
-    compiler.watch({
-        ignored: [
-            path.resolve(__dirname, 'dist'),
-            path.resolve(__dirname, 'node_modules')
-        ]
-    }, (error, stats) => {
+    initiateWatch(parameters,developWithSSR, (error) => {
         if(error == null){
 
             if(parameters.verbose){
@@ -90,19 +81,18 @@ const initiateSync = (parameters) => {
                 clearTimeout(timeout);
             }
 
-
             timeout = setTimeout(()=> {
 
                 if (developWithSSR !== false) {
                     startPreRenderServer(parameters)
-                        .then(() => pushToAemHandler(parameters,stats))
+                        .then(() => pushToAemHandler(parameters))
                         .then(() => {
                             reloadBrowser(parameters, server);
                         }).catch((err) => {
-                            captureError(parameters, err);
-                        })
+                        captureError(parameters, err);
+                    })
                 } else {
-                    pushToAemHandler(parameters,stats).then(() => {
+                    pushToAemHandler(parameters).then(() => {
                         reloadBrowser(parameters, server);
                     }).catch((err) => {
                         captureError(parameters, err);
@@ -112,7 +102,7 @@ const initiateSync = (parameters) => {
             }, parameters.delays.postCompiledDebounceDelay);
 
         }else{
-             captureError(parameters, err);
+            captureError(parameters, error);
         }
     });
 };

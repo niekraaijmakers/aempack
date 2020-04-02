@@ -18,7 +18,10 @@ const fs = require('fs');
 
 function perfObjectValues(manifest){
     if(manifest['files']){
+        //webpack
         return Object.values(manifest['files']);
+    }else if(manifest['assetsByChunkName']){
+        return Object.values(manifest['assetsByChunkName']);
     }else{
         return Object.values(manifest);
     }
@@ -35,6 +38,13 @@ function _inManifestCheck(parameters, manifest, filePathRelative){
     ){
         return true;
     }
+
+    if( filePathRelative.indexOf(parameters.clientLibRelativePath) > -1 &&
+        perfObjectValues(manifest).indexOf(filePathRelative.slice(parameters.clientLibRelativePath.length + 1)) > -1
+    ){
+        return true;
+    }
+
 
     return false;
 }
@@ -55,14 +65,9 @@ function inManifest(parameters, manifest, filePathRelative) {
     return _inManifestCheck(parameters, manifest, filePathRelative);
 }
 
-const cleanupLoop = (parameters, folder, eligibleForCleanUpRegex,stats) => {
+const cleanupLoop = (parameters, folder, eligibleForCleanUpRegex,manifest) => {
 
     const dir = parameters.clientLibAbsolutePath + folder;
-
-    const assetManifestPath = (parameters.assetManifestPath) ? parameters.assetManifestPath : parameters.clientLibAbsolutePath + "/asset-manifest.json";
-
-    const manifestStream = fs.readFileSync(assetManifestPath);
-    const manifest = JSON.parse(String(manifestStream));
     const files = fs.readdirSync(dir);
 
     for (const c in files) {
@@ -74,8 +79,8 @@ const cleanupLoop = (parameters, folder, eligibleForCleanUpRegex,stats) => {
         const isDir = fs.statSync(filePathAbsolute).isDirectory();
 
         if(isDir){
-            cleanupLoop(parameters, (folder + '/' + fileName), eligibleForCleanUpRegex, stats);
-        }else if(parameters.customCleanUpEligibilityCheck && parameters.customCleanUpEligibilityCheck(folder,fileName, eligibleForCleanUpRegex,stats)){
+            cleanupLoop(parameters, (folder + '/' + fileName), eligibleForCleanUpRegex,manifest);
+        }else if(parameters.customCleanUpEligibilityCheck && parameters.customCleanUpEligibilityCheck(folder,fileName, eligibleForCleanUpRegex)){
             if(parameters.verbose){
                 console.info('removed for cleanup: ' + filePathAbsolute);
             }
@@ -93,7 +98,7 @@ const cleanupLoop = (parameters, folder, eligibleForCleanUpRegex,stats) => {
 };
 
 
-module.exports = (parameters,stats) => {
+module.exports = (parameters) => {
 
     if(parameters.disableCleanup){
         return;
@@ -101,6 +106,9 @@ module.exports = (parameters,stats) => {
 
     const eligibleForCleanUpRegex = new RegExp(parameters.eligibleForCleanUpRegex);
 
-    cleanupLoop(parameters, '', eligibleForCleanUpRegex,stats);
+    const assetManifestPath = (parameters.assetManifestPath) ? parameters.assetManifestPath : parameters.clientLibAbsolutePath + "/asset-manifest.json";
+    const manifestStream = fs.readFileSync(assetManifestPath);
+    const manifest = JSON.parse(String(manifestStream));
 
+    cleanupLoop(parameters, '', eligibleForCleanUpRegex,manifest);
 };

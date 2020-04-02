@@ -32,8 +32,7 @@ const generateStandardOptions = (parameters) => {
 
 const gatherPayloads = (isFirst, parameters, folder, payloadArray) => {
 
-
-    const base = parameters.webpackConfig.output.path + "/" ;
+    const base = parameters.clientLibAbsolutePath + '/';
 
     const contents = fs.readdirSync(base + folder);
     const currentPayload = clone(generateStandardOptions(parameters));

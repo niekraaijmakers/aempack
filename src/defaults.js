@@ -32,9 +32,12 @@ module.exports = {
         onServerCloseCallback: null
     },
     browserSync: {},
-    webpackConfig: {
-        devtool: 'inline-source-map'
-    },
+
+    cliBuildCommand: null,
+    cliBuildCommandArgs: [],
+    cliBuildCommandSuccessMsg: 'succes',
+
+    webpackConfig: null,
     webpackServerConfig: null,
     disableServerSideRendering: false,
 

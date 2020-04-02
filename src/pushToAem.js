@@ -18,10 +18,10 @@ const gatherPayloads = require("./gatherpayloads");
 const request = require('request');
 const cleanUpOldFiles = require('./cleanupoldfiles');
 
-const pushToAemHandler = async (parameters, stats) => {
+const pushToAemHandler = async (parameters) => {
 
-    cleanUpOldFiles(parameters, stats);
-    const results = await commitToAem(parameters, stats);
+    cleanUpOldFiles(parameters);
+    const results = await commitToAem(parameters);
 
     return new Promise((resolve, reject) => {
         resolve(results);
