@@ -36,7 +36,7 @@ const gatherPayloads = (isFirst, parameters, folder, payloadArray) => {
 
     const contents = fs.readdirSync(base + folder);
     const currentPayload = clone(generateStandardOptions(parameters));
-    const jcrType = (isFirst) ? 'cq:ClientLibraryFolder' : 'nt:folder';
+    const jcrType = (isFirst && parameters.isInClientLibRoot) ? 'cq:ClientLibraryFolder' : 'nt:folder';
     currentPayload.url =  parameters.aemBaseUrl + parameters.clientLibRelativePath + folder + '?jcr:primaryType=' + jcrType;
 
 

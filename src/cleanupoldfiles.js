@@ -17,13 +17,26 @@
 const fs = require('fs');
 
 function perfObjectValues(manifest){
+
+    let values;
     if(manifest['files']){
-        //webpack
-        return Object.values(manifest['files']);
+        values = Object.values(manifest['files']);
     }else if(manifest['assetsByChunkName']){
-        return Object.values(manifest['assetsByChunkName']);
+        values = Object.values(manifest['assetsByChunkName']);
     }else{
-        return Object.values(manifest);
+        values = Object.values(manifest);
+    }
+
+    if(Array.isArray(values)){
+        let newArr = [];
+        for(var i = 0; i < values.length; i++)
+        {
+            newArr = newArr.concat(values[i]);
+        }
+        return newArr;
+
+    }else{
+        return values;
     }
 }
 

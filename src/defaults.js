@@ -33,6 +33,7 @@ module.exports = {
     },
     browserSync: {},
 
+    isInClientLibRoot: true,
     cliBuildCommand: null,
     cliBuildCommandArgs: [],
     cliBuildCommandSuccessMsg: 'succes',
