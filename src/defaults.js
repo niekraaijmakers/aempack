@@ -16,7 +16,9 @@
 
 module.exports = {
 
-
+    serviceWorker: {
+        enabled: false
+    },
     delays: {
         postCompiledDebounceDelay: 1000,
         serverSpawnDelay: 500,

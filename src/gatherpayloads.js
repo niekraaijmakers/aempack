@@ -52,6 +52,13 @@ const gatherPayloads = (isFirst, parameters, folder, payloadArray) => {
         }
 
     });
+
+    if(parameters.serviceWorker.enabled === true && isFirst){
+        const swName = parameters.serviceWorker.name || 'service-worker.js';
+        currentPayload.formData[swName] = fs.createReadStream(parameters.serviceWorker.absoluteSrcPath);
+        currentPayload.formData[swName + '@TypeHint'] = 'nt:file';
+    }
+
     payloadArray.push(currentPayload);
 
     if(parameters.callbacks.payloadsGathered){

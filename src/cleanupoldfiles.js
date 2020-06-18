@@ -93,7 +93,13 @@ const cleanupLoop = (parameters, folder, eligibleForCleanUpRegex,manifest) => {
 
         if(isDir){
             cleanupLoop(parameters, (folder + '/' + fileName), eligibleForCleanUpRegex,manifest);
-        }else if(parameters.customCleanUpEligibilityCheck && parameters.customCleanUpEligibilityCheck(folder,fileName, eligibleForCleanUpRegex)){
+        }
+        else if(parameters.serviceWorker.enabled === true && filePathAbsolute === parameters.serviceWorker.absoluteDestPath){
+            if(parameters.verbose){
+                console.info('service worker added: ' + filePathAbsolute);
+            }
+        }
+        else if(parameters.customCleanUpEligibilityCheck && parameters.customCleanUpEligibilityCheck(folder,fileName, eligibleForCleanUpRegex)){
             if(parameters.verbose){
                 console.info('removed for cleanup: ' + filePathAbsolute);
             }

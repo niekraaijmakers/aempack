@@ -21,6 +21,7 @@ const pushToAemHandler = require('./src/pushToAem');
 const defaultOptions = require('./src/defaults');
 const startBrowserSync = require('./src/initBrowserSync');
 const initiateWatch = require('./src/initiateWatch');
+const fs = require('fs-extra');
 
 const reloadBrowser = (parameters, server) => {
     if(parameters.browserSync.enabled){
@@ -36,7 +37,7 @@ const reloadBrowser = (parameters, server) => {
 };
 
 const captureError = (parameters, error) => {
-    console.log(error);
+    console.error(error);
     if(parameters.callbacks.onError){
         parameters.callbacks.onError(error);
     }
@@ -45,7 +46,9 @@ const captureError = (parameters, error) => {
 let timeout;
 
 
-
+const copyOverServiceWorker = (parameters) => {
+     fs.copySync(parameters.serviceWorker.absoluteSrcPath, parameters.serviceWorker.absoluteDestPath);
+};
 
 const initiateSync = (parameters) => {
 
@@ -71,10 +74,15 @@ const initiateSync = (parameters) => {
     }
 
     initiateWatch(parameters,developWithSSR, (error) => {
+
         if(error == null){
 
             if(parameters.verbose){
                 console.log('compiled client-side code');
+            }
+
+            if(parameters.serviceWorker.enabled === true){
+                copyOverServiceWorker(parameters);
             }
 
             if(timeout){
@@ -89,8 +97,8 @@ const initiateSync = (parameters) => {
                         .then(() => {
                             reloadBrowser(parameters, server);
                         }).catch((err) => {
-                        captureError(parameters, err);
-                    })
+                            captureError(parameters, err);
+                        })
                 } else {
                     pushToAemHandler(parameters).then(() => {
                         reloadBrowser(parameters, server);
