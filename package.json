@@ -22,7 +22,7 @@
   "author": "Adobe Systems Inc. - Niek Raaijmakers",
   "license": "Apache-2.0",
   "dependencies": {
-    "webpack": "^4.38.0",
+    "webpack": "^5.75.0",
     "webpack-manifest-plugin": "2.0.4",
     "clone": "^2.1.2",
     "request": "^2.88.0",
